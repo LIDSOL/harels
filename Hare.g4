@@ -1,292 +1,530 @@
 // Calc.g4
 grammar Hare;
 
-WHITESPACE: [ \r\n\t]+ -> skip;
+// operators :)
+lnot : '!';
+nequal : '!=';
+modulo : '%';
+band : '&';
+land : '&&';
+landeq : '&&=';
+bandeq : '&=';
+lparen : '(';
+rparen : ')';
+times : '*';
+timeseq : '*';
+plus : '+';
+pluseq : '+=';
+comma : ',';
+minus : '-';
+minuseq : '-=';
+dot : '.';
+double_dot : '..';
+ellipsis : '...';
+div : '/';
+diveq : '/=';
+colon : ':';
+double_colon : '::';
+semicolon : ';';
+less : '<';
+lshift : '<<';
+lshifteq : '<<=';
+lesseq : '<=';
+equal : '=';
+lequal : '==';
+arrow : '=>';
+gt : '>';
+gteq : '>=';
+rshift : '>>';
+rshifteq : '>>=';
+question : '?';
+lbracket : '[';
+rbracket : ']';
+bxor : '^';
+bxoreq : '^=';
+lxor : '^^';
+lxoreq : '^^=';
+lbrace : '{';
+rbrace : '}';
+bor : '|';
+boreq : '|=';
+lor : '||';
+loreq : '||=';
+bnot : '~';
 
-// OPERATORS :)
-LNOT : "!";
-NEQUAL : "!=";
-MODULO : "%";
-BAND : "&";
-LAND : "&&";
-LANDEQ : "&&=";
-BANDEQ : "&=";
-LPAREN : "(";
-RPAREN : ")";
-TIMES : "*";
-TIMESEQ : "*";
-PLUS : "+";
-PLUSEQ : "+=";
-COMMA : ",";
-MINUS : "-";
-MINUSEQ : "-=";
-DOT : ".";
-DOUBLE_DOT : "..";
-ELLIPSIS : "...";
-DIV : "/";
-DIVEQ : "/=";
-COLON : ":";
-DOUBLE_COLON : "::";
-SEMICOLON : ";";
-LESS : "<";
-LSHIFT : "<<";
-LSHIFTEQ : "<<=";
-LESSEQ : "<=";
-EQUAL : "=";
-LEQUAL : "==";
-ARROW : "=>";
-GT : ">";
-GTEQ : ">=";
-RSHIFT : ">>";
-RSHIFTEQ : ">>=";
-QUESTION : "?";
-LBRACKET : "[";
-RBRACKET : "]";
-BXOR : "^";
-BXOREQ : "^=";
-LXOR : "^^";
-LXOREQ : "^^=";
-LBRACE : "{";
-RBRACE : "}";
-BOR : "|";
-BOREQ : "|=";
-LOR : "||";
-LOREQ : "||=";
-BNOT : "~";
-
-OCTAL-
-
-KEYWORDS : 'abort' | 
-    'align' | 
-    'alloc' | 
-    'append' | 
-    'as' | 
-    'assert' | 
-    'bool' | 
-    'break' | 
-    'case' | 
-    'const' | 
-    'continue' | 
-    'def' | 
-    'defer' | 
-    'delete' | 
-    'done' | 
-    'else' | 
-    'enum' | 
-    'export' | 
-    'f32' | 
-    'f64' | 
-    'false' | 
-    'fn' | 
-    'for' | 
-    'free' | 
-    'i16' | 
-    'i32' | 
-    'i64' | 
-    'i8' | 
-    'if' | 
-    'insert' | 
-    'int' | 
-    'is' | 
-    'len' | 
-    'let' | 
-    'match' | 
-    'never' | 
-    'nomem' | 
-    'null' | 
-    'nullable' | 
-    'offset' | 
-    'opaque' | 
-    'return' | 
-    'rune' | 
-    'size' | 
-    'static' | 
-    'str' | 
-    'struct' | 
-    'switch' | 
-    'true' | 
-    'type' | 
-    'u16' | 
-    'u32' | 
-    'u64' | 
-    'u8' | 
-    'uint' | 
-    'uintptr' | 
-    'union' | 
-    'use' | 
-    'vaarg' | 
-    'vaend' | 
-    'valist' | 
-    'vastart' | 
-    'void' | 
-    'yield' | 
-    '\_';
+keywords
+    : 'abort'
+    | 'align' 
+    | 'alloc' 
+    | 'append' 
+    | 'as' 
+    | 'assert' 
+    | 'bool' 
+    | 'break' 
+    | 'case' 
+    | 'const' 
+    | 'continue' 
+    | 'def' 
+    | 'defer' 
+    | 'delete' 
+    | 'done' 
+    | 'else' 
+    | 'enum' 
+    | 'export' 
+    | 'f32' 
+    | 'f64' 
+    | 'false' 
+    | 'fn' 
+    | 'for' 
+    | 'free' 
+    | 'i16' 
+    | 'i32' 
+    | 'i64' 
+    | 'i8' 
+    | 'if' 
+    | 'insert' 
+    | 'int' 
+    | 'is' 
+    | 'len' 
+    | 'let' 
+    | 'match' 
+    | 'never' 
+    | 'nomem' 
+    | 'null' 
+    | 'nullable' 
+    | 'offset' 
+    | 'opaque' 
+    | 'return' 
+    | 'rune' 
+    | 'size' 
+    | 'static' 
+    | 'str' 
+    | 'struct' 
+    | 'switch' 
+    | 'true' 
+    | 'type' 
+    | 'u16' 
+    | 'u32' 
+    | 'u64' 
+    | 'u8' 
+    | 'uint' 
+    | 'uintptr' 
+    | 'union' 
+    | 'use' 
+    | 'vaarg' 
+    | 'vaend' 
+    | 'valist' 
+    | 'vastart' 
+    | 'void' 
+    | 'yield' 
+    | '\_'
+    ;
 
 
-ATTRIBUTES : '@fini' | 
-    '@init' | 
-    '@packed' | 
-    '@symbol' | 
-    '@test' | 
-    '@threadlocal';
+attributes
+    : '@fini'
+    | '@init'
+    | '@packed'
+    | '@symbol'
+    | '@test'
+    | '@threadlocal'
+    ;
 
 
-// TODO: FALTA NAME: INVALID_ATTRIBUTE : '@ name'
+// todo: falta name: invalid_attribute : '@ name'
 
 
-// Types
+// types
 
-INTEGER_TYPE : 'i8' | 
-    'i16' | 
-    'i32' | 
-    'i64' | 
-    'u8' | 
-    'u16' | 
-    'u32' | 
-    'u64' | 
-    'int' | 
-    'uint' | 
-    'size' | 
-    'uintptr';
+type: 'const'? '!'? storage-class
 
-FLOAT_TYPE : 'f32' | 'f64';
+primitive-type
+    : integer-type 
+    | floating-type 
+    | 'bool' 
+    | 'done' 
+    | 'never' 
+    | 'nomem' 
+    | 'opaque' 
+    | 'rune' 
+    | 'str' 
+    | 'valist' 
+    | 'void'
+    ;
 
-PRIMITIVE_TYPE : INTEGER_TYPE |
-    FLOAT_TYPE |
-    'bool' | 
-    'done' | 
-    'never' | 
-    'nomem' | 
-    'opaque' | 
-    'rune' | 
-    'str' | 
-    'valist' | 
-    'void';
+pointer-type: '*', type | 'nullable', '*', type
 
-// Type declarations
+struct-union-type
+    : 'struct' '@packed'? '{' struct-union-fields '}'
+    | union '{ struct-union-fields '}'
+    ;
 
-ENUM_STORAGE : INTEGER_TYPE | 'rune';
-ENUM_VALUES : ENUM_VALUE, {","} | ENUM_VALUE, ",", ENUM_VALUES;
-ENUM_VALUE :  NAME | NAME, '=', EXPRESSION;
+struct-union-fields
+    : struct-union-field ','?
+    | struct-union-field ',' struct-union-fields
+    ;
 
-def{enum-values} \\
-	{enum-value} \optional{{,}} \\
-	{enum-value} {,} {enum-values} \\
+struct-union-field
+    : '_' ':' type
+    | name ':' type
+    | struct-union-type
+    | identifier
+    ;
 
-def{enum-value} \\
-	{name} \\
-	{name} {=} {expression} \\
+tuple-type
+    : '(' tupyle-types ')'
+    ;
+
+tuple-types
+    : type ',' type ','?
+    | type ',' tuple-types
+    ;
+
+tagged-union-type
+    : '( tagged-types ')'
+    ;
+
+tagged-types
+    : type '|' type '|'?
+    | type '|' tagged-types
+    ;
+
+slice-array-type
+    : '[' ']' type
+    | '[' expression ']' type
+    | '[' '*' ']' type
+    | '[' '_' ']' type
+    ;
+
+function-type
+    : 'fn' prototype
+    ;
+
+prototype
+    : '(' parameter-list ')' type
+    ;
+
+parameter-list
+    : parameters ','?
+    | parameters '...'
+    | parameters ',' '...'
+    | '...'
+    ;
+
+parameters
+    : parameter
+    | parameters ',' parameter
+    ;
+
+parameter
+    : name ':' type default-value?
+    | type default-value?
+    ;
+
+default-value
+    : '=' expression
+    ;
+
+alias-type
+    : identifier
+    ;
+
+unwrapped-alias
+    : '...' identifier
+    ;
+
+integer-type
+    : 'i8' 
+    | 'i16' 
+    | 'i32' 
+    | 'i64' 
+    | 'u8' 
+    | 'u16' 
+    | 'u32' 
+    | 'u64' 
+    | 'int' 
+    | 'uint' 
+    | 'size' 
+    | 'uintptr'
+    ;
+
+floating-type : 'f32' | 'f64';
+
+primitive_type
+    : integer_type
+    | float_type
+    | 'bool' 
+    | 'done' 
+    | 'never' 
+    | 'nomem' 
+    | 'opaque' 
+    | 'rune' 
+    | 'str' 
+    | 'valist' 
+    | 'void'
+    ;
+
+storage-class
+    : primitive-type
+    | pointer-type
+    | struct-union-type
+    | tuple-type
+    | tagged-union-type
+    | slice-array-type
+    | function-type
+    | alias-type
+    | unwrapped-type
+    ;
+
+// type declarations
+
+enum_storage : integer_type | 'rune';
+enum_values : enum_value ','? | enum_value ',' enum_values;
+enum_value :  name | name '=' expression;
 
 
-// Identifier
+// identifier
 
 
-NAME: NONDIGIT | NAME, ALNUM;
+name: nondigit | name alnum;
 
-NONDIGIT : 'a' | 
-    'b' | 
-    'c' | 
-    'd' | 
-    'e' | 
-    'f' | 
-    'g' | 
-    'h' | 
-    'i' | 
-    'j' | 
-    'k' | 
-    'l' | 
-    'm' | 
-    'n' | 
-    'o' | 
-    'p' | 
-    'q' | 
-    'r' | 
-    's' | 
-    't' | 
-    'u' | 
-    'v' | 
-    'w' | 
-    'x' | 
-    'y' | 
-    'z' | 
-    'A' | 
-    'B' | 
-    'C' | 
-    'D' | 
-    'E' | 
-    'F' | 
-    'G' | 
-    'H' | 
-    'I' | 
-    'J' | 
-    'K' | 
-    'L' | 
-    'M' | 
-    'N' | 
-    'O' | 
-    'P' | 
-    'Q' | 
-    'R' | 
-    'S' | 
-    'T' | 
-    'U' | 
-    'V' | 
-    'W' | 
-    'X' | 
-    'Y' | 
-    'Z' | 
-    '\_';
-
-
-DECIMAL_DIGIT: '0' | 
-    '1' | 
-    '2' | 
-    '3' | 
-    '4' | 
-    '5' | 
-    '6' | 
-    '7' | 
-    '8' | 
-    '9';
-
-ALNUM: DECIMAL_DIGIT | NONDIGIT;
-
-IDENTIFIER : NAME | NAME, {::}, IDENTIFIER;
+nondigit
+    : 'a'
+    | 'b'
+    | 'c' 
+    | 'd' 
+    | 'e' 
+    | 'f' 
+    | 'g' 
+    | 'h' 
+    | 'i' 
+    | 'j' 
+    | 'k' 
+    | 'l' 
+    | 'm' 
+    | 'n' 
+    | 'o' 
+    | 'p' 
+    | 'q' 
+    | 'r' 
+    | 's' 
+    | 't' 
+    | 'u' 
+    | 'v' 
+    | 'w' 
+    | 'x' 
+    | 'y' 
+    | 'z' 
+    | 'a' 
+    | 'b' 
+    | 'c' 
+    | 'd' 
+    | 'e' 
+    | 'f' 
+    | 'g' 
+    | 'h' 
+    | 'i' 
+    | 'j' 
+    | 'k' 
+    | 'l' 
+    | 'm' 
+    | 'n' 
+    | 'o' 
+    | 'p' 
+    | 'q' 
+    | 'r' 
+    | 's' 
+    | 't' 
+    | 'u' 
+    | 'v' 
+    | 'w' 
+    | 'x' 
+    | 'y' 
+    | 'z' 
+    | '_';
 
 
+decimal_digit
+    : '0'
+    | '1'
+    | '2'
+    | '3'
+    | '4'
+    | '5'
+    | '6'
+    | '7'
+    | '8'
+    | '9'
+    ;
+
+alnum: decimal_digit | nondigit;
+
+identifier : name | name '::' identifier;
 
 
-// Expression
-
-LITERAL: INTEGER_LITERAL | 
-	FLOATING_LITERAL | 
-	RUNE_LITERAL | 
-	STRING_LITERAL | 
-	ARRAY_LITERAL | 
-	STRUCT_LITERAL | 
-	TUPLE_LITERAL | 
-	"true" | 
-	"false" | 
-	"nomem" | 
-	"null" | 
-	"void" | 
-	"done";
 
 
-INTEGER_SUFFIX: 'i' | 
-    'u' | 
-    'z' | 
-    'i8' | 
-    'i16' | 
-    'i32' | 
-    'i64' | 
-    'u8' | 
-    'u16' | 
-    'u32' | 
-    'u64';
+// expression
 
-BINARY_DIGIT: '0' | '1';
-OCTAL_DIGIT: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7';
+literal
+    : integer_literal
+    | floating_literal
+    | rune_literal
+    | string_literal 
+    | array_literal 
+    | struct_literal 
+    | tuple_literal 
+    | 'true' 
+    | 'false' 
+    | 'nomem' 
+    | 'null' 
+    | 'void' 
+    | 'done'
+    ;
 
-BINARY_DIGITS: BINARY_DIGIT, {BINARY_DIGITS} | BINARY_DIGIT, '_', BINARY_DIGITS;
-OCTAL_DIGITS: OCTAL_DIGIT, {OCTAL_DIGITS} | OCTAL_DIGIT, '_', OCTAL_DIGITS;
+
+floating-literal
+    : nonzero-decimal-digits '.' decimal-digits decimal-exponent? floating-suffix?
+    | nonzero-decimal-digits decimal-exponent? floating-suffix
+    | '0x' hex-digits '.' hex-digits binary-exponent floating-suffix?
+    | '0x' hex-digits binary-exponent floating-suffix?
+    ;
+
+floating-suffix
+    : 'f32'
+    | 'f64'
+    ;
+
+decimal-digits-without-separators
+    : decimal-digit decimal-digits-without-separators?
+    ;
+
+decimal-digits
+    : decimal-digit decimaldigits?
+    | decimal_digit '_' decimaldigits
+    ;
+
+nonzero-decimal-digits
+    : '0'
+    | nonzero-decimal-digit decimal-digits?
+    | nonzero-decimal-digit '_' decimal_digits
+    ;
+
+nonzero-decimal-digit
+    : '1'
+    | '2'
+    | '3'
+    | '4'
+    | '5'
+    | '6'
+    | '7'
+    | '8'
+    | '9'
+    ;
+
+hex-digits
+    : hex-digit hex-digits?
+    : hex-digit '_' hex-digits
+    ;
+
+hex-digit
+    : '0'
+    | '1'
+    | '2'
+    | '3'
+    | '4'
+    | '5'
+    | '6'
+    | '7'
+    | '8'
+    | '9'
+    | '0'
+    | 'A'
+    | 'a'
+    | 'B'
+    | 'b'
+    | 'C'
+    | 'c'
+    | 'D'
+    | 'd'
+    | 'E'
+    | 'e'
+    | 'F'
+    | 'f'
+    ;
+
+decimal-exponent
+    : decimal-exponent-char sign? decimal-digits-without-separators
+    ;
+
+binary-exponent
+    : binary-exponent-char sign? decimal-digits-without-separators
+    ;
+
+sign
+    : '+'
+    | '-'
+    ;
+
+decimal-exponent-char
+    : 'e'
+    | 'E'
+    ;
+
+binary-exponent-char
+    : 'p'
+    | 'P'
+    ;
+
+
+
+integer-literal
+: '0x' hex-digits integer-suffix?
+| '0o' octal-digits integer-suffix?
+| '0b' binary-digits integer-suffix?
+| nonzero-decimal-digits positive-decimal-exponent? integer-suffix?
+;
+
+integer_suffix
+    : 'i'
+    | 'u'
+    | 'z'
+    | 'i8'
+    | 'i16'
+    | 'i32'
+    | 'i64'
+    | 'u8'
+    | 'u16'
+    | 'u32'
+    | 'u64'
+    ;
+
+binary_digit: '0' | '1';
+octal_digit: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7';
+
+binary_digits
+    : binary_digit binary_digits?
+    | binary_digit '_' binary_digits
+    ;
+
+octal_digits
+    : octal_digit octal_digits?
+    | octal_digit '_' octal_digits
+    ;
+
+positive-decimal-exponent
+    : decimal-exponent-char '+'? decimal-digits-without-separators
+    ;
+
+
+
+
+// Other
+
+whitespace
+    : [ \t]+ -> channel(hidden)
+    ;
+
+newline
+    : ('\r' '\n'? | '\n') -> channel(hidden)
+    ;
