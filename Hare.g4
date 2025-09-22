@@ -516,8 +516,325 @@ positive-decimal-exponent
     : decimal-exponent-char '+'? decimal-digits-without-separators
     ;
 
+rune-literal
+    : '\'' rune '\''
+    ;
+
+rune 
+    : ~['\\\r\n]
+    | escape-sequence
+    ;
+
+escape-sequence
+    : named-escape
+    | '\\x' hex-digit hex-digit
+    | '\\u' fourbyte fourbyte
+    | '\\U' eightbyte
+    ;
+
+fourbyte
+    : hex-digit hex-digit hex-digit hex-digit
+    ;
+
+eightbyte
+    : fourbyte fourbyte
+    ;
 
 
+named-escape
+    : '\0'
+    | '\a'
+    | '\b'
+    | '\f'
+    | '\n'
+    | '\r'
+    | '\t'
+    | '\v'
+    | '\\'
+    | '\''
+    | '\"'
+    ;
+
+
+
+string-literal
+: string-section string-literal?
+;
+
+string-section
+    : '"' string-chars? '"'
+    | '`' rawstring-chars? '`'
+    ;
+
+string-chars
+    : string-char string-chars?
+    ;
+
+
+string-char
+    : ~["\\]
+    | escape-sequence
+    ;
+
+rawstring-chars
+    : rawstring-char rawstring-chars?
+    ;
+
+rawstring-char
+    : ~[`]
+    ;
+
+
+
+array-literal
+    : '[' array-members ']'
+    ;
+
+
+array-members
+    : expression ','?
+    | expression '...'
+    | expression ',' array-members
+    ;
+
+
+
+struct-literal
+    : 'struct' '{' field-values ','? '}'
+    | identifier '{' struct-initializer '}'
+    ;
+
+struct-initializer
+    : field-values ','?
+    | field-values ','? '...'
+    | '...'
+    ;
+
+
+field-values
+    : field-value
+    | field-values ',' field-value
+    ;
+
+field-value
+    : name '=' expression
+    | name ':' type '=' expression
+    | struct-literal
+    ;
+
+
+
+tuple-literal
+    : '(' tuple-items ')'
+    ;
+
+tuple-items:
+    : expression ',' expression ','?
+    | expression ',' tuple-items
+    ;
+
+
+plain-expression
+    : identifier
+    | literal
+    ;
+
+nested-expression
+    : plain-expression
+    | '(' expression ')'
+    ;
+
+allocation-expression
+    : 'alloc' '(' expression ')'
+    | 'alloc' '(' expression '...' ')'
+    | 'alloc' '(' expression ',' expression ')'
+    ;
+
+free-expression
+    : 'free' '(' expression ')'
+    ;
+
+
+assertion-expression
+    : 'assert' '('  expression ')'
+    | 'assert' '(' expression ',' expression ')'
+    | 'abort' '(' expression? ')'
+    ;
+
+static-assertion-expression
+    : 'static' assertion-expression
+    ;
+
+
+call-expression
+    : postfix-expression '(' argument-list? ')'
+    ;
+
+argument-list
+    : expression ','?
+    | expression '...'
+    | expression ',' argument-list
+    ;
+
+
+measurement-expression
+    : align-expression
+    | size-expression
+    | length-expression
+    | offset-expression
+    ;
+
+align-expression
+    : 'align' '(' type ')'
+    ;
+
+size-expression
+    : 'size' '(' type ')'
+    ;
+
+length-expression
+    : 'len' '(' expression ')'
+    ;
+
+offset-expression
+    : 'offset' '(' offset-operand ')'
+    ;
+
+offset-operand
+    : field-access-expression
+    | '(' offset-operand ')'
+    ;
+
+field-access-expression
+    : postfix-expression '.' name
+    | postfix-expression '.' integer-literal
+    ;
+
+indexing-expression
+    : postfix-expression '[' expression ']'
+    ; 
+
+slicing-expression
+    : postfix-expression '[' expression? '..' expression? ']'
+    ;
+
+
+slice-mutation-expression
+    : append-expression
+    | insert-expression
+    | delete-expression
+    ;
+
+append-expression
+: 'static'? 'append' '(' object-selector ',' expression ')'
+| 'static'? 'append' '(' object-selector ',' expression '...' ')'
+| 'static'? 'append' '(' object-selector ',' expression ',' expression ')'
+
+
+
+insert-expression
+: 'static'? 'insert' '(' insert-operand ',' expression ')'
+| 'static'? 'insert' '(' insert-operand ',' expression '...' ')'
+| 'static'? 'insert' '(' insert-operand ',' expression ',' expression ')'
+;
+
+insert-operand
+    : indexing-expression
+    | '(' insert-operand ')'
+    ;
+
+delete-expression
+: 'static'? 'delete' '(' delete-operand ')'
+;
+
+delete-operand
+    : indexing-expression
+    | slicing-expression
+    | '(' delete-operand ')'
+    ;
+
+
+error-checking-expression
+    : postfix-expression '?'
+    | postfix-expression '!'
+    ;
+
+postfix-expression
+    : nested-expression
+    | call-expression
+    | field-access-expression
+    | indexing-expression
+    | slicing-expression
+    | error-checking-expression
+    | builtin-expression
+    ;
+
+object-selector
+    : identifier
+    | indexing-expression
+    | field-access-expression
+    | '( object-selector ')
+    ;
+
+
+variadic-expression
+    : 'vastart' '(' ')'
+    | 'vaarg' '(' object-selector ',' type ')'
+    | 'vaend' '(' object-selector ')'
+    ;
+
+builtin-expression
+    : allocation-expression
+    | assertion-expression
+    | measurement-expression
+    | slice-mutation-expression
+    | static-assertion-expression
+    | variadic-expression
+    ;
+
+unary-expression
+    : postfix-expression
+    | compound-expression
+    | match-expression
+    | switch-expression
+    | unary-operator unary-expreesion
+    ;
+
+unary-operator
+    : '-'
+    | '~'
+    | '!'
+    | '*'
+    | '&'
+    ;
+
+
+cast-expression
+    : unary-expression
+    | cast-expression ':' type
+    | cast-expression 'as' nullable-type
+    | cast-expression 'is' nullable-type
+    ;
+
+nullable-type
+    : type
+    | null
+    ;
+
+
+multiplicative-expression
+    : cast-expression
+    | multiplicative-expression '*' cast-expression
+    | multiplicative-expression '/' cast-expression
+    | multiplicative-expression '%' cast-expression
+    ;
+
+
+additive-expression
+: multiplicative-expression
+| additive-expression '+' multiplicative-expression
+| additive-expression '-' multiplicative-expression
+;
 
 // Other
 
