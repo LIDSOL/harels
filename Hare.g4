@@ -19,12 +19,12 @@ comma : ',';
 minus : '-';
 minuseq : '-=';
 dot : '.';
-double_dot : '..';
+doubleDot : '..';
 ellipsis : '...';
 div : '/';
 diveq : '/=';
 colon : ':';
-double_colon : '::';
+doubleColon : '::';
 semicolon : ';';
 less : '<';
 lshift : '<<';
@@ -117,7 +117,7 @@ keywords
     | 'vastart' 
     | 'void' 
     | 'yield' 
-    | '\_'
+    | '_'
     ;
 
 
@@ -131,80 +131,69 @@ attributes
     ;
 
 
-// todo: falta name: invalid_attribute : '@ name'
-
-
-// types
-
-type: 'const'? '!'? storage-class
-
-primitive-type
-    : integer-type 
-    | floating-type 
-    | 'bool' 
-    | 'done' 
-    | 'never' 
-    | 'nomem' 
-    | 'opaque' 
-    | 'rune' 
-    | 'str' 
-    | 'valist' 
-    | 'void'
+invalidAttribute
+    : '@' name
     ;
 
-pointer-type: '*', type | 'nullable', '*', type
 
-struct-union-type
-    : 'struct' '@packed'? '{' struct-union-fields '}'
-    | union '{ struct-union-fields '}'
+
+type
+    : 'const'? '!'? storageClass
     ;
 
-struct-union-fields
-    : struct-union-field ','?
-    | struct-union-field ',' struct-union-fields
+pointerType: '*' type | 'nullable' '*' type ;
+
+structUnionType
+    : 'struct' '@packed'? '{' structUnionFields '}'
+    | 'union' '{' structUnionFields '}'
     ;
 
-struct-union-field
+structUnionFields
+    : structUnionField ','?
+    | structUnionField ',' structUnionFields
+    ;
+
+structUnionField
     : '_' ':' type
     | name ':' type
-    | struct-union-type
+    | structUnionType
     | identifier
     ;
 
-tuple-type
-    : '(' tupyle-types ')'
+tupleType
+    : '(' tupleTypes ')'
     ;
 
-tuple-types
+tupleTypes
     : type ',' type ','?
-    | type ',' tuple-types
+    | type ',' tupleTypes
     ;
 
-tagged-union-type
-    : '( tagged-types ')'
+taggedUnionType
+    : '(' taggedTypes ')'
     ;
 
-tagged-types
+taggedTypes
     : type '|' type '|'?
-    | type '|' tagged-types
+    | type '|' taggedTypes
     ;
 
-slice-array-type
+sliceArrayType
     : '[' ']' type
     | '[' expression ']' type
     | '[' '*' ']' type
     | '[' '_' ']' type
     ;
 
-function-type
+functionType
     : 'fn' prototype
     ;
 
 prototype
-    : '(' parameter-list ')' type
+    : '(' parameterList ')' type
     ;
 
-parameter-list
+parameterList
     : parameters ','?
     | parameters '...'
     | parameters ',' '...'
@@ -217,23 +206,23 @@ parameters
     ;
 
 parameter
-    : name ':' type default-value?
-    | type default-value?
+    : name ':' type defaultValue?
+    | type defaultValue?
     ;
 
-default-value
+defaultValue
     : '=' expression
     ;
 
-alias-type
+aliasType
     : identifier
     ;
 
-unwrapped-alias
+unwrappedAlias
     : '...' identifier
     ;
 
-integer-type
+integerType
     : 'i8' 
     | 'i16' 
     | 'i32' 
@@ -248,11 +237,11 @@ integer-type
     | 'uintptr'
     ;
 
-floating-type : 'f32' | 'f64';
+floatingType : 'f32' | 'f64';
 
-primitive_type
-    : integer_type
-    | float_type
+primitiveType
+    : integerType
+    | floatingType
     | 'bool' 
     | 'done' 
     | 'never' 
@@ -264,24 +253,17 @@ primitive_type
     | 'void'
     ;
 
-storage-class
-    : primitive-type
-    | pointer-type
-    | struct-union-type
-    | tuple-type
-    | tagged-union-type
-    | slice-array-type
-    | function-type
-    | alias-type
-    | unwrapped-type
+storageClass
+    : primitiveType
+    | pointerType
+    | structUnionType
+    | tupleType
+    | taggedUnionType
+    | sliceArrayType
+    | functionType
+    | aliasType
+    | unwrappedAlias
     ;
-
-// type declarations
-
-enum_storage : integer_type | 'rune';
-enum_values : enum_value ','? | enum_value ',' enum_values;
-enum_value :  name | name '=' expression;
-
 
 // identifier
 
@@ -341,10 +323,11 @@ nondigit
     | 'x' 
     | 'y' 
     | 'z' 
-    | '_';
+    | '_'
+;
 
 
-decimal_digit
+decimalDigit
     : '0'
     | '1'
     | '2'
@@ -357,7 +340,7 @@ decimal_digit
     | '9'
     ;
 
-alnum: decimal_digit | nondigit;
+alnum: decimalDigit | nondigit;
 
 identifier : name | name '::' identifier;
 
@@ -367,13 +350,13 @@ identifier : name | name '::' identifier;
 // expression
 
 literal
-    : integer_literal
-    | floating_literal
-    | rune_literal
-    | string_literal 
-    | array_literal 
-    | struct_literal 
-    | tuple_literal 
+    : integerLiteral
+    | floatingLiteral
+    | runeLiteral
+    | stringLiteral 
+    | arrayLiteral 
+    | structLiteral 
+    | tupleLiteral 
     | 'true' 
     | 'false' 
     | 'nomem' 
@@ -383,34 +366,34 @@ literal
     ;
 
 
-floating-literal
-    : nonzero-decimal-digits '.' decimal-digits decimal-exponent? floating-suffix?
-    | nonzero-decimal-digits decimal-exponent? floating-suffix
-    | '0x' hex-digits '.' hex-digits binary-exponent floating-suffix?
-    | '0x' hex-digits binary-exponent floating-suffix?
+floatingLiteral
+    : nonzeroDecimalDigits '.' decimalDigits decimalExponent? floatingSuffix?
+    | nonzeroDecimalDigits decimalExponent? floatingSuffix
+    | '0x' hexDigits '.' hexDigits binaryExponent floatingSuffix?
+    | '0x' hexDigits binaryExponent floatingSuffix?
     ;
 
-floating-suffix
+floatingSuffix
     : 'f32'
     | 'f64'
     ;
 
-decimal-digits-without-separators
-    : decimal-digit decimal-digits-without-separators?
+decimalDigitsWithoutSeparators
+    : decimalDigit decimalDigitsWithoutSeparators?
     ;
 
-decimal-digits
-    : decimal-digit decimaldigits?
-    | decimal_digit '_' decimaldigits
+decimalDigits
+    : decimalDigit decimalDigits?
+    | decimalDigit '_' decimalDigits
     ;
 
-nonzero-decimal-digits
+nonzeroDecimalDigits
     : '0'
-    | nonzero-decimal-digit decimal-digits?
-    | nonzero-decimal-digit '_' decimal_digits
+    | nonzeroDecimalDigit decimalDigits?
+    | nonzeroDecimalDigit '_' decimalDigits
     ;
 
-nonzero-decimal-digit
+nonzeroDecimalDigit
     : '1'
     | '2'
     | '3'
@@ -422,12 +405,12 @@ nonzero-decimal-digit
     | '9'
     ;
 
-hex-digits
-    : hex-digit hex-digits?
-    : hex-digit '_' hex-digits
+hexDigits
+    : hexDigit hexDigits?
+    | hexDigit '_' hexDigits
     ;
 
-hex-digit
+hexDigit
     : '0'
     | '1'
     | '2'
@@ -453,12 +436,12 @@ hex-digit
     | 'f'
     ;
 
-decimal-exponent
-    : decimal-exponent-char sign? decimal-digits-without-separators
+decimalExponent
+    : decimalExponentChar sign? decimalDigitsWithoutSeparators
     ;
 
-binary-exponent
-    : binary-exponent-char sign? decimal-digits-without-separators
+binaryExponent
+    : binaryExponentChar sign? decimalDigitsWithoutSeparators
     ;
 
 sign
@@ -466,26 +449,26 @@ sign
     | '-'
     ;
 
-decimal-exponent-char
+decimalExponentChar
     : 'e'
     | 'E'
     ;
 
-binary-exponent-char
+binaryExponentChar
     : 'p'
     | 'P'
     ;
 
 
 
-integer-literal
-: '0x' hex-digits integer-suffix?
-| '0o' octal-digits integer-suffix?
-| '0b' binary-digits integer-suffix?
-| nonzero-decimal-digits positive-decimal-exponent? integer-suffix?
+integerLiteral
+: '0x' hexDigits integerSuffix?
+| '0o' octalDigits integerSuffix?
+| '0b' binaryDigits integerSuffix?
+| nonzeroDecimalDigits positiveDecimalExponent? integerSuffix?
 ;
 
-integer_suffix
+integerSuffix
     : 'i'
     | 'u'
     | 'z'
@@ -499,41 +482,41 @@ integer_suffix
     | 'u64'
     ;
 
-binary_digit: '0' | '1';
-octal_digit: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7';
+binaryDigit: '0' | '1';
+octalDigit: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7';
 
-binary_digits
-    : binary_digit binary_digits?
-    | binary_digit '_' binary_digits
+binaryDigits
+    : binaryDigit binaryDigits?
+    | binaryDigit '_' binaryDigits
     ;
 
-octal_digits
-    : octal_digit octal_digits?
-    | octal_digit '_' octal_digits
+octalDigits
+    : octalDigit octalDigits?
+    | octalDigit '_' octalDigits
     ;
 
-positive-decimal-exponent
-    : decimal-exponent-char '+'? decimal-digits-without-separators
+positiveDecimalExponent
+    : decimalExponentChar '+'? decimalDigitsWithoutSeparators
     ;
 
-rune-literal
+runeLiteral
     : '\'' rune '\''
     ;
 
 rune 
-    : ~['\\\r\n]
-    | escape-sequence
+    : ~('\\'|'\'')
+    | escapeSequence
     ;
 
-escape-sequence
-    : named-escape
-    | '\\x' hex-digit hex-digit
+escapeSequence
+    : namedEscape
+    | '\\x' hexDigit hexDigit
     | '\\u' fourbyte fourbyte
     | '\\U' eightbyte
     ;
 
 fourbyte
-    : hex-digit hex-digit hex-digit hex-digit
+    : hexDigit hexDigit hexDigit hexDigit
     ;
 
 eightbyte
@@ -541,266 +524,269 @@ eightbyte
     ;
 
 
-named-escape
-    : '\0'
-    | '\a'
-    | '\b'
-    | '\f'
-    | '\n'
-    | '\r'
-    | '\t'
-    | '\v'
+namedEscape
+    : '\\0'
+    | '\\a'
+    | '\\b'
+    | '\\f'
+    | '\\n'
+    | '\\r'
+    | '\\t'
+    | '\\v'
     | '\\'
-    | '\''
-    | '\"'
+    | '\\\''
+    | '\\"'
     ;
 
 
 
-string-literal
-: string-section string-literal?
-;
-
-string-section
-    : '"' string-chars? '"'
-    | '`' rawstring-chars? '`'
+stringLiteral
+    : stringSection stringLiteral?
     ;
 
-string-chars
-    : string-char string-chars?
+stringSection
+    : '"' stringChars? '"'
+    | '`' rawstringChars? '`'
     ;
 
-
-string-char
-    : ~["\\]
-    | escape-sequence
-    ;
-
-rawstring-chars
-    : rawstring-char rawstring-chars?
-    ;
-
-rawstring-char
-    : ~[`]
+stringChars
+    : stringChar stringChars?
     ;
 
 
+stringChar
+    : ~('"'|'\\')
+    | escapeSequence
+    ;
 
-array-literal
-    : '[' array-members ']'
+rawstringChars
+    : rawstringChar rawstringChars?
+    ;
+
+rawstringChar
+    : ~('`')
     ;
 
 
-array-members
+
+arrayLiteral
+    : '[' arrayMembers ']'
+    ;
+
+
+arrayMembers
     : expression ','?
     | expression '...'
-    | expression ',' array-members
+    | expression ',' arrayMembers
     ;
 
 
 
-struct-literal
-    : 'struct' '{' field-values ','? '}'
-    | identifier '{' struct-initializer '}'
+structLiteral
+    : 'struct' '{' fieldValues ','? '}'
+    | identifier '{' structInitializer '}'
     ;
 
-struct-initializer
-    : field-values ','?
-    | field-values ','? '...'
+structInitializer
+    : fieldValues ','?
+    | fieldValues ','? '...'
     | '...'
     ;
 
 
-field-values
-    : field-value
-    | field-values ',' field-value
+fieldValues
+    : fieldValue
+    | fieldValues ',' fieldValue
     ;
 
-field-value
+fieldValue
     : name '=' expression
     | name ':' type '=' expression
-    | struct-literal
+    | structLiteral
     ;
 
 
 
-tuple-literal
-    : '(' tuple-items ')'
+tupleLiteral
+    : '(' tupleItems ')'
     ;
 
-tuple-items:
+tupleItems
     : expression ',' expression ','?
-    | expression ',' tuple-items
+    | expression ',' tupleItems
     ;
 
 
-plain-expression
+plainExpression
     : identifier
     | literal
     ;
 
-nested-expression
-    : plain-expression
+nestedExpression
+    : plainExpression
     | '(' expression ')'
     ;
 
-allocation-expression
+allocationExpression
     : 'alloc' '(' expression ')'
     | 'alloc' '(' expression '...' ')'
     | 'alloc' '(' expression ',' expression ')'
     ;
 
-free-expression
+freeExpression
     : 'free' '(' expression ')'
     ;
 
 
-assertion-expression
+assertionExpression
     : 'assert' '('  expression ')'
     | 'assert' '(' expression ',' expression ')'
     | 'abort' '(' expression? ')'
     ;
 
-static-assertion-expression
-    : 'static' assertion-expression
+staticAssertionExpression
+    : 'static' assertionExpression
     ;
 
 
-call-expression
-    : postfix-expression '(' argument-list? ')'
+callExpression
+    : postfixExpression '(' argumentList? ')'
     ;
 
-argument-list
+argumentList
     : expression ','?
     | expression '...'
-    | expression ',' argument-list
+    | expression ',' argumentList
     ;
 
 
-measurement-expression
-    : align-expression
-    | size-expression
-    | length-expression
-    | offset-expression
+measurementExpression
+    : alignExpression
+    | sizeExpression
+    | lengthExpression
+    | offsetExpression
     ;
 
-align-expression
+alignExpression
     : 'align' '(' type ')'
     ;
 
-size-expression
+sizeExpression
     : 'size' '(' type ')'
     ;
 
-length-expression
+lengthExpression
     : 'len' '(' expression ')'
     ;
 
-offset-expression
-    : 'offset' '(' offset-operand ')'
+offsetExpression
+    : 'offset' '(' offsetOperand ')'
     ;
 
-offset-operand
-    : field-access-expression
-    | '(' offset-operand ')'
+offsetOperand
+    : fieldAccessExpression
+    | '(' offsetOperand ')'
     ;
 
-field-access-expression
-    : postfix-expression '.' name
-    | postfix-expression '.' integer-literal
+fieldAccessExpression
+    : postfixExpression '.' name
+    | postfixExpression '.' integerLiteral
     ;
 
-indexing-expression
-    : postfix-expression '[' expression ']'
+indexingExpression
+    : postfixExpression '[' expression ']'
     ; 
 
-slicing-expression
-    : postfix-expression '[' expression? '..' expression? ']'
+slicingExpression
+    : postfixExpression '[' expression? '..' expression? ']'
     ;
 
 
-slice-mutation-expression
-    : append-expression
-    | insert-expression
-    | delete-expression
+sliceMutationExpression
+    : appendExpression
+    | insertExpression
+    | deleteExpression
     ;
 
-append-expression
-: 'static'? 'append' '(' object-selector ',' expression ')'
-| 'static'? 'append' '(' object-selector ',' expression '...' ')'
-| 'static'? 'append' '(' object-selector ',' expression ',' expression ')'
+appendExpression
+    : 'static'? 'append' '(' objectSelector ',' expression ')'
+    | 'static'? 'append' '(' objectSelector ',' expression '...' ')'
+    | 'static'? 'append' '(' objectSelector ',' expression ',' expression ')'
+    ;
 
 
 
-insert-expression
-: 'static'? 'insert' '(' insert-operand ',' expression ')'
-| 'static'? 'insert' '(' insert-operand ',' expression '...' ')'
-| 'static'? 'insert' '(' insert-operand ',' expression ',' expression ')'
+insertExpression
+    : 'static'? 'insert' '(' insertOperand ',' expression ')'
+    | 'static'? 'insert' '(' insertOperand ',' expression '...' ')'
+    | 'static'? 'insert' '(' insertOperand ',' expression ',' expression ')'
+    ;
+
+insertOperand
+    : indexingExpression
+    | '(' insertOperand ')'
+    ;
+
+deleteExpression
+: 'static'? 'delete' '(' deleteOperand ')'
 ;
 
-insert-operand
-    : indexing-expression
-    | '(' insert-operand ')'
-    ;
-
-delete-expression
-: 'static'? 'delete' '(' delete-operand ')'
-;
-
-delete-operand
-    : indexing-expression
-    | slicing-expression
-    | '(' delete-operand ')'
+deleteOperand
+    : indexingExpression
+    | slicingExpression
+    | '(' deleteOperand ')'
     ;
 
 
-error-checking-expression
-    : postfix-expression '?'
-    | postfix-expression '!'
+errorCheckingExpression
+    : postfixExpression '?'
+    | postfixExpression '!'
     ;
 
-postfix-expression
-    : nested-expression
-    | call-expression
-    | field-access-expression
-    | indexing-expression
-    | slicing-expression
-    | error-checking-expression
-    | builtin-expression
+postfixExpression
+    : nestedExpression
+    | postfixExpression '(' argumentList? ')'
+    | postfixExpression '.' name
+    | postfixExpression '.' integerLiteral
+    | postfixExpression '[' expression ']'
+    | postfixExpression '[' expression? '..' expression? ']'
+    | postfixExpression '?'
+    | postfixExpression '!'
+    | builtinExpression
     ;
 
-object-selector
+objectSelector
     : identifier
-    | indexing-expression
-    | field-access-expression
-    | '( object-selector ')
+    | indexingExpression
+    | fieldAccessExpression
+    | '(' objectSelector ')'
     ;
 
 
-variadic-expression
+variadicExpression
     : 'vastart' '(' ')'
-    | 'vaarg' '(' object-selector ',' type ')'
-    | 'vaend' '(' object-selector ')'
+    | 'vaarg' '(' objectSelector ',' type ')'
+    | 'vaend' '(' objectSelector ')'
     ;
 
-builtin-expression
-    : allocation-expression
-    | assertion-expression
-    | measurement-expression
-    | slice-mutation-expression
-    | static-assertion-expression
-    | variadic-expression
+builtinExpression
+    : allocationExpression
+    | assertionExpression
+    | measurementExpression
+    | sliceMutationExpression
+    | staticAssertionExpression
+    | variadicExpression
     ;
 
-unary-expression
-    : postfix-expression
-    | compound-expression
-    | match-expression
-    | switch-expression
-    | unary-operator unary-expreesion
+unaryExpression
+    : postfixExpression
+    | compoundExpression
+    | matchExpression
+    | switchExpression
+    | unaryOperator unaryExpression
     ;
 
-unary-operator
+unaryOperator
     : '-'
     | '~'
     | '!'
@@ -809,39 +795,369 @@ unary-operator
     ;
 
 
-cast-expression
-    : unary-expression
-    | cast-expression ':' type
-    | cast-expression 'as' nullable-type
-    | cast-expression 'is' nullable-type
+castExpression
+    : unaryExpression
+    | castExpression ':' type
+    | castExpression 'as' nullableType
+    | castExpression 'is' nullableType
     ;
 
-nullable-type
+nullableType
     : type
-    | null
+    | 'null'
     ;
 
 
-multiplicative-expression
-    : cast-expression
-    | multiplicative-expression '*' cast-expression
-    | multiplicative-expression '/' cast-expression
-    | multiplicative-expression '%' cast-expression
+multiplicativeExpression
+    : castExpression
+    | multiplicativeExpression '*' castExpression
+    | multiplicativeExpression '/' castExpression
+    | multiplicativeExpression '%' castExpression
     ;
 
 
-additive-expression
-: multiplicative-expression
-| additive-expression '+' multiplicative-expression
-| additive-expression '-' multiplicative-expression
-;
+additiveExpression
+    : multiplicativeExpression
+    | additiveExpression '+' multiplicativeExpression
+    | additiveExpression '-' multiplicativeExpression
+    ;
+
+
+shiftExpression
+    : additiveExpression
+    | shiftExpression '<<' additiveExpression
+    | shiftExpression '>>' additiveExpression
+    ;
+
+andExpression
+    : shiftExpression
+    | andExpression '&' shiftExpression
+    ;
+
+exclusiveOrExpression
+    : andExpression
+    | exclusiveOrExpression '^' andExpression
+    ;
+
+inclusiveOrExpression
+    : exclusiveOrExpression
+    | inclusiveOrExpression '^' exclusiveOrExpression
+    ;
+
+comparisonExpression
+    : inclusiveOrExpression
+    | comparisonExpression '<' inclusiveOrExpression
+    | comparisonExpression '>' inclusiveOrExpression
+    | comparisonExpression '<=' inclusiveOrExpression
+    | comparisonExpression '>=' inclusiveOrExpression
+    ;
+
+equalityExpression
+    : comparisonExpression
+    | equalityExpression '==' comparisonExpression
+    | equalityExpression '!=' comparisonExpression
+    ;
+
+
+logicalAndExpression
+    : equalityExpression
+    | logicalAndExpression '&&' equalityExpression
+    ;
+
+logicalXorExpression
+    : logicalAndExpression
+    | logicalXorExpression '^^' logicalAndExpression
+    ;
+
+logicalOrExpression
+    : logicalXorExpression
+    | logicalOrExpression '||' logicalXorExpression
+    ;
+
+ifExpression
+    : 'if' conditionalBranch
+    | 'if' conditionalBranch 'else' expression
+    ;
+
+conditionalBranch
+    : '(' expression ')' expression
+    ;
+
+forLoop
+    : 'for' label? '(' forPredicate ')' expression
+    ;
+
+forPredicate
+    : iterableBinding
+    | expression
+    | bindingList ';' expression
+    | expression ';' expression
+    | bindingList ';' expression ';' expression
+    ;
+
+iterableBinding
+    : iterableBindingLeft '..' expression
+    | iterableBindingLeft '&' '..' expression
+    | iterableBindingLeft '=>' expression
+    ;
+
+iterableBindingLeft
+    : 'const' bindingName
+    | 'const' bindingName ':' type
+    | 'let' bindingName 
+    | 'let' bindingName ':' type
+    ;
+
+label
+    : ':' name
+    ;
+
+
+
+switchExpression
+    : 'switch' label? '(' expression ')' '{' switchCases '}'
+    ;
+
+switchCases
+    : switchCase switchCases?
+    ;
+
+switchCase
+    : 'case' caseOptions? '=>' expressionList
+    ;
+
+caseOptions
+    : expression ','
+    | expression ',' caseOptions
+    ;
+
+
+matchExpression
+    : 'match' label? '(' expression ')' '{' matchCases '}'
+    ;
+
+
+matchCases
+    : matchCase matchCases?
+    ;
+
+matchCase
+    : 'case' 'let' name ':' type '=>' expressionList
+    | 'case' nullableType? '=>' expressionList
+    ;
+
+
+
+assignment
+    : assignmentTarget assignmentOp expression
+    | slicingAssignmentTarget '=' expression
+    ;
+
+assignmentTarget
+    : objectSelector
+    | indirectAssignmentTarget
+    ;
+
+
+indirectAssignmentTarget
+    : '*' unaryExpression
+    ;
+
+slicingAssignmentTarget
+    : slicingExpression
+    | '(' slicingAssignmentTarget ')'
+    ;
+
+
+assignmentOp
+    : '='
+    | '+='
+    | '-='
+    | '*='
+    | '/='
+    | '%='
+    | '<<='
+    | '>>='
+    | '&='
+    | '|='
+    | '^'
+    | '&&='
+    | '||='
+    | '^^'
+    ;
+
+
+bindingList
+    : 'static'?  'let'  bindings 
+    | 'static'?  'const'  bindings 
+    | 'def'  bindings 
+    ;
+
+bindings
+    : binding  ','? 
+    | binding  ','  bindings 
+    ;
+
+binding
+    : bindingName  '='  expression 
+    | bindingName  ':'  type  '='  expression 
+    ;
+
+bindingName
+    : name 
+    | '('  tupleBindingNames  ')' 
+    ;
+
+tupleBindingNames
+    : tupleBindingName  ','  tupleBindingName  ','? 
+    | tupleBindingName  ','  tupleBindingNames 
+    ;
+
+tupleBindingName
+    : name 
+    | '_' 
+    ;
+
+deferExpression
+    : 'defer'  expression 
+    ;
+
+expressionList
+    : expression  ';'  expressionList? 
+    | bindingList  ';'  expressionList? 
+    | deferExpression  ';'  expressionList? 
+    ;
+
+compoundExpression
+    : label? '{' expressionList '}' 
+    ;
+
+controlExpression
+    : 'break'  label? 
+    | 'continue'  label? 
+    | 'return'  expression? 
+    | yieldExpression 
+    ;
+
+yieldExpression
+    : 'yield' 
+    | 'yield'  expression 
+    | 'yield'  label 
+    | 'yield'  label  ','  expression 
+    ;
+
+expression
+    : assignment 
+    | logicalOrExpression 
+    | ifExpression 
+    | forLoop 
+    | controlExpression 
+    ;
+
+
+// UNIT
+
+
+declarations
+    : 'export'?  declaration  ';'  declarations? 
+    | staticAssertionExpression  ';'  declarations? 
+    ;
+declaration
+    : globalDeclaration 
+    | constantDeclaration 
+    | typeDeclaration 
+    | functionDeclaration 
+    ;
+globalDeclaration
+    : 'let'  globalBindings 
+    | 'const'  globalBindings 
+    ;
+globalBindings
+    : globalBinding  ','? 
+    | globalBinding  ','  globalBindings 
+    ;
+globalBinding
+    : declAttr?  '@threadlocal'?  identifier  ':'  type 
+    | declAttr?  '@threadlocal'?  identifier  ':'  type  '='  expression 
+    | declAttr?  '@threadlocal'?  identifier  '='  expression 
+    ;
+declAttr
+    : '@symbol'  '('  stringLiteral  ')' 
+    ;
+constantDeclaration
+    : 'def'  constantBindings 
+    ;
+constantBindings
+    : constantBinding  ','? 
+    | constantBinding  ','  constantBindings 
+    ;
+constantBinding
+    : identifier  ':'  type  '='  expression 
+    | identifier  '='  expression 
+    ;
+typeDeclaration
+    : 'type'  typeBindings 
+    ;
+typeBindings
+    : typeBinding  ','? 
+    | typeBinding  ','  typeBindings 
+    ;
+typeBinding
+    : identifier  '='  type 
+    | identifier  '='  enumType 
+    ;
+enumType
+    : 'enum'  enumStorage?  '{'  enumValues  '}' 
+    ;
+enumValues
+    : enumValue  ','? 
+    | enumValue  ','  enumValues 
+    ;
+enumValue
+    : name 
+    | name  '='  expression 
+    ;
+enumStorage
+    : integerType 
+    | 'rune' 
+    ;
+functionDeclaration
+    : fndecAttr?  'fn'  identifier  prototype 
+    | fndecAttr?  'fn'  identifier  prototype  '='  expression 
+    ;
+fndecAttr
+    : '@fini' 
+    | '@init' 
+    | '@test' 
+    | declAttr 
+    ;
+subUnit
+    : imports?  declarations? 
+    ;
+imports
+    : useDirective  imports? 
+    ;
+useDirective
+    : 'use'  identifier  ';' 
+    | 'use'  name  '='  identifier  ';' 
+    | 'use'  identifier  '::'  '{'  memberList  '}'  ';' 
+    | 'use'  identifier  '::'  '*'  ';' 
+    ;
+memberList
+    : name  ','? 
+    | name  ','  memberList 
+    ;
+
+
+// :)
+start : subUnit EOF;
 
 // Other
 
-whitespace
-    : [ \t]+ -> channel(hidden)
+WHITESPACE
+    : [ \t]+ -> skip
     ;
 
-newline
-    : ('\r' '\n'? | '\n') -> channel(hidden)
+NEWLINE
+    : ('\r' '\n'? | '\n') -> skip
     ;
