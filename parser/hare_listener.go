@@ -8,156 +8,6 @@ import "github.com/antlr/antlr4/runtime/Go/antlr"
 type HareListener interface {
 	antlr.ParseTreeListener
 
-	// EnterLnot is called when entering the lnot production.
-	EnterLnot(c *LnotContext)
-
-	// EnterNequal is called when entering the nequal production.
-	EnterNequal(c *NequalContext)
-
-	// EnterModulo is called when entering the modulo production.
-	EnterModulo(c *ModuloContext)
-
-	// EnterBand is called when entering the band production.
-	EnterBand(c *BandContext)
-
-	// EnterLand is called when entering the land production.
-	EnterLand(c *LandContext)
-
-	// EnterLandeq is called when entering the landeq production.
-	EnterLandeq(c *LandeqContext)
-
-	// EnterBandeq is called when entering the bandeq production.
-	EnterBandeq(c *BandeqContext)
-
-	// EnterLparen is called when entering the lparen production.
-	EnterLparen(c *LparenContext)
-
-	// EnterRparen is called when entering the rparen production.
-	EnterRparen(c *RparenContext)
-
-	// EnterTimes is called when entering the times production.
-	EnterTimes(c *TimesContext)
-
-	// EnterTimeseq is called when entering the timeseq production.
-	EnterTimeseq(c *TimeseqContext)
-
-	// EnterPlus is called when entering the plus production.
-	EnterPlus(c *PlusContext)
-
-	// EnterPluseq is called when entering the pluseq production.
-	EnterPluseq(c *PluseqContext)
-
-	// EnterComma is called when entering the comma production.
-	EnterComma(c *CommaContext)
-
-	// EnterMinus is called when entering the minus production.
-	EnterMinus(c *MinusContext)
-
-	// EnterMinuseq is called when entering the minuseq production.
-	EnterMinuseq(c *MinuseqContext)
-
-	// EnterDot is called when entering the dot production.
-	EnterDot(c *DotContext)
-
-	// EnterDoubleDot is called when entering the doubleDot production.
-	EnterDoubleDot(c *DoubleDotContext)
-
-	// EnterEllipsis is called when entering the ellipsis production.
-	EnterEllipsis(c *EllipsisContext)
-
-	// EnterDiv is called when entering the div production.
-	EnterDiv(c *DivContext)
-
-	// EnterDiveq is called when entering the diveq production.
-	EnterDiveq(c *DiveqContext)
-
-	// EnterColon is called when entering the colon production.
-	EnterColon(c *ColonContext)
-
-	// EnterDoubleColon is called when entering the doubleColon production.
-	EnterDoubleColon(c *DoubleColonContext)
-
-	// EnterSemicolon is called when entering the semicolon production.
-	EnterSemicolon(c *SemicolonContext)
-
-	// EnterLess is called when entering the less production.
-	EnterLess(c *LessContext)
-
-	// EnterLshift is called when entering the lshift production.
-	EnterLshift(c *LshiftContext)
-
-	// EnterLshifteq is called when entering the lshifteq production.
-	EnterLshifteq(c *LshifteqContext)
-
-	// EnterLesseq is called when entering the lesseq production.
-	EnterLesseq(c *LesseqContext)
-
-	// EnterEqual is called when entering the equal production.
-	EnterEqual(c *EqualContext)
-
-	// EnterLequal is called when entering the lequal production.
-	EnterLequal(c *LequalContext)
-
-	// EnterArrow is called when entering the arrow production.
-	EnterArrow(c *ArrowContext)
-
-	// EnterGt is called when entering the gt production.
-	EnterGt(c *GtContext)
-
-	// EnterGteq is called when entering the gteq production.
-	EnterGteq(c *GteqContext)
-
-	// EnterRshift is called when entering the rshift production.
-	EnterRshift(c *RshiftContext)
-
-	// EnterRshifteq is called when entering the rshifteq production.
-	EnterRshifteq(c *RshifteqContext)
-
-	// EnterQuestion is called when entering the question production.
-	EnterQuestion(c *QuestionContext)
-
-	// EnterLbracket is called when entering the lbracket production.
-	EnterLbracket(c *LbracketContext)
-
-	// EnterRbracket is called when entering the rbracket production.
-	EnterRbracket(c *RbracketContext)
-
-	// EnterBxor is called when entering the bxor production.
-	EnterBxor(c *BxorContext)
-
-	// EnterBxoreq is called when entering the bxoreq production.
-	EnterBxoreq(c *BxoreqContext)
-
-	// EnterLxor is called when entering the lxor production.
-	EnterLxor(c *LxorContext)
-
-	// EnterLxoreq is called when entering the lxoreq production.
-	EnterLxoreq(c *LxoreqContext)
-
-	// EnterLbrace is called when entering the lbrace production.
-	EnterLbrace(c *LbraceContext)
-
-	// EnterRbrace is called when entering the rbrace production.
-	EnterRbrace(c *RbraceContext)
-
-	// EnterBor is called when entering the bor production.
-	EnterBor(c *BorContext)
-
-	// EnterBoreq is called when entering the boreq production.
-	EnterBoreq(c *BoreqContext)
-
-	// EnterLor is called when entering the lor production.
-	EnterLor(c *LorContext)
-
-	// EnterLoreq is called when entering the loreq production.
-	EnterLoreq(c *LoreqContext)
-
-	// EnterBnot is called when entering the bnot production.
-	EnterBnot(c *BnotContext)
-
-	// EnterKeywords is called when entering the keywords production.
-	EnterKeywords(c *KeywordsContext)
-
 	// EnterAttributes is called when entering the attributes production.
 	EnterAttributes(c *AttributesContext)
 
@@ -230,18 +80,6 @@ type HareListener interface {
 	// EnterStorageClass is called when entering the storageClass production.
 	EnterStorageClass(c *StorageClassContext)
 
-	// EnterName is called when entering the name production.
-	EnterName(c *NameContext)
-
-	// EnterNondigit is called when entering the nondigit production.
-	EnterNondigit(c *NondigitContext)
-
-	// EnterDecimalDigit is called when entering the decimalDigit production.
-	EnterDecimalDigit(c *DecimalDigitContext)
-
-	// EnterAlnum is called when entering the alnum production.
-	EnterAlnum(c *AlnumContext)
-
 	// EnterIdentifier is called when entering the identifier production.
 	EnterIdentifier(c *IdentifierContext)
 
@@ -253,12 +91,6 @@ type HareListener interface {
 
 	// EnterFloatingSuffix is called when entering the floatingSuffix production.
 	EnterFloatingSuffix(c *FloatingSuffixContext)
-
-	// EnterDecimalDigitsWithoutSeparators is called when entering the decimalDigitsWithoutSeparators production.
-	EnterDecimalDigitsWithoutSeparators(c *DecimalDigitsWithoutSeparatorsContext)
-
-	// EnterDecimalDigits is called when entering the decimalDigits production.
-	EnterDecimalDigits(c *DecimalDigitsContext)
 
 	// EnterNonzeroDecimalDigits is called when entering the nonzeroDecimalDigits production.
 	EnterNonzeroDecimalDigits(c *NonzeroDecimalDigitsContext)
@@ -280,9 +112,6 @@ type HareListener interface {
 
 	// EnterSign is called when entering the sign production.
 	EnterSign(c *SignContext)
-
-	// EnterDecimalExponentChar is called when entering the decimalExponentChar production.
-	EnterDecimalExponentChar(c *DecimalExponentCharContext)
 
 	// EnterBinaryExponentChar is called when entering the binaryExponentChar production.
 	EnterBinaryExponentChar(c *BinaryExponentCharContext)
@@ -322,9 +151,6 @@ type HareListener interface {
 
 	// EnterEightbyte is called when entering the eightbyte production.
 	EnterEightbyte(c *EightbyteContext)
-
-	// EnterNamedEscape is called when entering the namedEscape production.
-	EnterNamedEscape(c *NamedEscapeContext)
 
 	// EnterStringLiteral is called when entering the stringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
@@ -659,156 +485,6 @@ type HareListener interface {
 	// EnterStart is called when entering the start production.
 	EnterStart(c *StartContext)
 
-	// ExitLnot is called when exiting the lnot production.
-	ExitLnot(c *LnotContext)
-
-	// ExitNequal is called when exiting the nequal production.
-	ExitNequal(c *NequalContext)
-
-	// ExitModulo is called when exiting the modulo production.
-	ExitModulo(c *ModuloContext)
-
-	// ExitBand is called when exiting the band production.
-	ExitBand(c *BandContext)
-
-	// ExitLand is called when exiting the land production.
-	ExitLand(c *LandContext)
-
-	// ExitLandeq is called when exiting the landeq production.
-	ExitLandeq(c *LandeqContext)
-
-	// ExitBandeq is called when exiting the bandeq production.
-	ExitBandeq(c *BandeqContext)
-
-	// ExitLparen is called when exiting the lparen production.
-	ExitLparen(c *LparenContext)
-
-	// ExitRparen is called when exiting the rparen production.
-	ExitRparen(c *RparenContext)
-
-	// ExitTimes is called when exiting the times production.
-	ExitTimes(c *TimesContext)
-
-	// ExitTimeseq is called when exiting the timeseq production.
-	ExitTimeseq(c *TimeseqContext)
-
-	// ExitPlus is called when exiting the plus production.
-	ExitPlus(c *PlusContext)
-
-	// ExitPluseq is called when exiting the pluseq production.
-	ExitPluseq(c *PluseqContext)
-
-	// ExitComma is called when exiting the comma production.
-	ExitComma(c *CommaContext)
-
-	// ExitMinus is called when exiting the minus production.
-	ExitMinus(c *MinusContext)
-
-	// ExitMinuseq is called when exiting the minuseq production.
-	ExitMinuseq(c *MinuseqContext)
-
-	// ExitDot is called when exiting the dot production.
-	ExitDot(c *DotContext)
-
-	// ExitDoubleDot is called when exiting the doubleDot production.
-	ExitDoubleDot(c *DoubleDotContext)
-
-	// ExitEllipsis is called when exiting the ellipsis production.
-	ExitEllipsis(c *EllipsisContext)
-
-	// ExitDiv is called when exiting the div production.
-	ExitDiv(c *DivContext)
-
-	// ExitDiveq is called when exiting the diveq production.
-	ExitDiveq(c *DiveqContext)
-
-	// ExitColon is called when exiting the colon production.
-	ExitColon(c *ColonContext)
-
-	// ExitDoubleColon is called when exiting the doubleColon production.
-	ExitDoubleColon(c *DoubleColonContext)
-
-	// ExitSemicolon is called when exiting the semicolon production.
-	ExitSemicolon(c *SemicolonContext)
-
-	// ExitLess is called when exiting the less production.
-	ExitLess(c *LessContext)
-
-	// ExitLshift is called when exiting the lshift production.
-	ExitLshift(c *LshiftContext)
-
-	// ExitLshifteq is called when exiting the lshifteq production.
-	ExitLshifteq(c *LshifteqContext)
-
-	// ExitLesseq is called when exiting the lesseq production.
-	ExitLesseq(c *LesseqContext)
-
-	// ExitEqual is called when exiting the equal production.
-	ExitEqual(c *EqualContext)
-
-	// ExitLequal is called when exiting the lequal production.
-	ExitLequal(c *LequalContext)
-
-	// ExitArrow is called when exiting the arrow production.
-	ExitArrow(c *ArrowContext)
-
-	// ExitGt is called when exiting the gt production.
-	ExitGt(c *GtContext)
-
-	// ExitGteq is called when exiting the gteq production.
-	ExitGteq(c *GteqContext)
-
-	// ExitRshift is called when exiting the rshift production.
-	ExitRshift(c *RshiftContext)
-
-	// ExitRshifteq is called when exiting the rshifteq production.
-	ExitRshifteq(c *RshifteqContext)
-
-	// ExitQuestion is called when exiting the question production.
-	ExitQuestion(c *QuestionContext)
-
-	// ExitLbracket is called when exiting the lbracket production.
-	ExitLbracket(c *LbracketContext)
-
-	// ExitRbracket is called when exiting the rbracket production.
-	ExitRbracket(c *RbracketContext)
-
-	// ExitBxor is called when exiting the bxor production.
-	ExitBxor(c *BxorContext)
-
-	// ExitBxoreq is called when exiting the bxoreq production.
-	ExitBxoreq(c *BxoreqContext)
-
-	// ExitLxor is called when exiting the lxor production.
-	ExitLxor(c *LxorContext)
-
-	// ExitLxoreq is called when exiting the lxoreq production.
-	ExitLxoreq(c *LxoreqContext)
-
-	// ExitLbrace is called when exiting the lbrace production.
-	ExitLbrace(c *LbraceContext)
-
-	// ExitRbrace is called when exiting the rbrace production.
-	ExitRbrace(c *RbraceContext)
-
-	// ExitBor is called when exiting the bor production.
-	ExitBor(c *BorContext)
-
-	// ExitBoreq is called when exiting the boreq production.
-	ExitBoreq(c *BoreqContext)
-
-	// ExitLor is called when exiting the lor production.
-	ExitLor(c *LorContext)
-
-	// ExitLoreq is called when exiting the loreq production.
-	ExitLoreq(c *LoreqContext)
-
-	// ExitBnot is called when exiting the bnot production.
-	ExitBnot(c *BnotContext)
-
-	// ExitKeywords is called when exiting the keywords production.
-	ExitKeywords(c *KeywordsContext)
-
 	// ExitAttributes is called when exiting the attributes production.
 	ExitAttributes(c *AttributesContext)
 
@@ -881,18 +557,6 @@ type HareListener interface {
 	// ExitStorageClass is called when exiting the storageClass production.
 	ExitStorageClass(c *StorageClassContext)
 
-	// ExitName is called when exiting the name production.
-	ExitName(c *NameContext)
-
-	// ExitNondigit is called when exiting the nondigit production.
-	ExitNondigit(c *NondigitContext)
-
-	// ExitDecimalDigit is called when exiting the decimalDigit production.
-	ExitDecimalDigit(c *DecimalDigitContext)
-
-	// ExitAlnum is called when exiting the alnum production.
-	ExitAlnum(c *AlnumContext)
-
 	// ExitIdentifier is called when exiting the identifier production.
 	ExitIdentifier(c *IdentifierContext)
 
@@ -904,12 +568,6 @@ type HareListener interface {
 
 	// ExitFloatingSuffix is called when exiting the floatingSuffix production.
 	ExitFloatingSuffix(c *FloatingSuffixContext)
-
-	// ExitDecimalDigitsWithoutSeparators is called when exiting the decimalDigitsWithoutSeparators production.
-	ExitDecimalDigitsWithoutSeparators(c *DecimalDigitsWithoutSeparatorsContext)
-
-	// ExitDecimalDigits is called when exiting the decimalDigits production.
-	ExitDecimalDigits(c *DecimalDigitsContext)
 
 	// ExitNonzeroDecimalDigits is called when exiting the nonzeroDecimalDigits production.
 	ExitNonzeroDecimalDigits(c *NonzeroDecimalDigitsContext)
@@ -931,9 +589,6 @@ type HareListener interface {
 
 	// ExitSign is called when exiting the sign production.
 	ExitSign(c *SignContext)
-
-	// ExitDecimalExponentChar is called when exiting the decimalExponentChar production.
-	ExitDecimalExponentChar(c *DecimalExponentCharContext)
 
 	// ExitBinaryExponentChar is called when exiting the binaryExponentChar production.
 	ExitBinaryExponentChar(c *BinaryExponentCharContext)
@@ -973,9 +628,6 @@ type HareListener interface {
 
 	// ExitEightbyte is called when exiting the eightbyte production.
 	ExitEightbyte(c *EightbyteContext)
-
-	// ExitNamedEscape is called when exiting the namedEscape production.
-	ExitNamedEscape(c *NamedEscapeContext)
 
 	// ExitStringLiteral is called when exiting the stringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)

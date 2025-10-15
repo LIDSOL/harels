@@ -2,123 +2,55 @@
 grammar Hare;
 
 // operators :)
-lnot : '!';
-nequal : '!=';
-modulo : '%';
-band : '&';
-land : '&&';
-landeq : '&&=';
-bandeq : '&=';
-lparen : '(';
-rparen : ')';
-times : '*';
-timeseq : '*';
-plus : '+';
-pluseq : '+=';
-comma : ',';
-minus : '-';
-minuseq : '-=';
-dot : '.';
-doubleDot : '..';
-ellipsis : '...';
-div : '/';
-diveq : '/=';
-colon : ':';
-doubleColon : '::';
-semicolon : ';';
-less : '<';
-lshift : '<<';
-lshifteq : '<<=';
-lesseq : '<=';
-equal : '=';
-lequal : '==';
-arrow : '=>';
-gt : '>';
-gteq : '>=';
-rshift : '>>';
-rshifteq : '>>=';
-question : '?';
-lbracket : '[';
-rbracket : ']';
-bxor : '^';
-bxoreq : '^=';
-lxor : '^^';
-lxoreq : '^^=';
-lbrace : '{';
-rbrace : '}';
-bor : '|';
-boreq : '|=';
-lor : '||';
-loreq : '||=';
-bnot : '~';
-
-keywords
-    : 'abort'
-    | 'align' 
-    | 'alloc' 
-    | 'append' 
-    | 'as' 
-    | 'assert' 
-    | 'bool' 
-    | 'break' 
-    | 'case' 
-    | 'const' 
-    | 'continue' 
-    | 'def' 
-    | 'defer' 
-    | 'delete' 
-    | 'done' 
-    | 'else' 
-    | 'enum' 
-    | 'export' 
-    | 'f32' 
-    | 'f64' 
-    | 'false' 
-    | 'fn' 
-    | 'for' 
-    | 'free' 
-    | 'i16' 
-    | 'i32' 
-    | 'i64' 
-    | 'i8' 
-    | 'if' 
-    | 'insert' 
-    | 'int' 
-    | 'is' 
-    | 'len' 
-    | 'let' 
-    | 'match' 
-    | 'never' 
-    | 'nomem' 
-    | 'null' 
-    | 'nullable' 
-    | 'offset' 
-    | 'opaque' 
-    | 'return' 
-    | 'rune' 
-    | 'size' 
-    | 'static' 
-    | 'str' 
-    | 'struct' 
-    | 'switch' 
-    | 'true' 
-    | 'type' 
-    | 'u16' 
-    | 'u32' 
-    | 'u64' 
-    | 'u8' 
-    | 'uint' 
-    | 'uintptr' 
-    | 'union' 
-    | 'use' 
-    | 'vaarg' 
-    | 'vaend' 
-    | 'valist' 
-    | 'vastart' 
-    | 'void' 
-    | 'yield' 
-    | '_'
-    ;
+Lnot : '!';
+Nequal : '!=';
+Modulo : '%';
+Band : '&';
+Land : '&&';
+Landeq : '&&=';
+Bandeq : '&=';
+Lparen : '(';
+Rparen : ')';
+Times : '*';
+Timeseq : '*=';
+Plus : '+';
+Pluseq : '+=';
+Comma : ',';
+Minus : '-';
+Minuseq : '-=';
+Dot : '.';
+DoubleDot : '..';
+Ellipsis : '...';
+Div : '/';
+Diveq : '/=';
+Colon : ':';
+DoubleColon : '::';
+Semicolon : ';';
+Less : '<';
+Lshift : '<<';
+Lshifteq : '<<=';
+Lesseq : '<=';
+Equal : '=';
+Lequal : '==';
+Arrow : '=>';
+Gt : '>';
+Gteq : '>=';
+Rshift : '>>';
+Rshifteq : '>>=';
+Question : '?';
+Lbracket : '[';
+Rbracket : ']';
+Bxor : '^';
+Bxoreq : '^=';
+Lxor : '^^';
+Lxoreq : '^^=';
+Lbrace : '{';
+Rbrace : '}';
+Bor : '|';
+Boreq : '|=';
+Lor : '||';
+Loreq : '||=';
+Bnot : '~';
 
 
 attributes
@@ -132,16 +64,15 @@ attributes
 
 
 invalidAttribute
-    : '@' name
+    : '@' Name
     ;
-
 
 
 type
     : 'const'? '!'? storageClass
     ;
 
-pointerType: '*' type | 'nullable' '*' type ;
+pointerType: Times type | 'nullable' Times type ;
 
 structUnionType
     : 'struct' '@packed'? '{' structUnionFields '}'
@@ -155,7 +86,7 @@ structUnionFields
 
 structUnionField
     : '_' ':' type
-    | name ':' type
+    | Name ':' type
     | structUnionType
     | identifier
     ;
@@ -181,7 +112,7 @@ taggedTypes
 sliceArrayType
     : '[' ']' type
     | '[' expression ']' type
-    | '[' '*' ']' type
+    | '[' Times ']' type
     | '[' '_' ']' type
     ;
 
@@ -190,7 +121,7 @@ functionType
     ;
 
 prototype
-    : '(' parameterList ')' type
+    : '(' parameterList? ')' type
     ;
 
 parameterList
@@ -206,12 +137,12 @@ parameters
     ;
 
 parameter
-    : name ':' type defaultValue?
+    : Name ':' type defaultValue?
     | type defaultValue?
     ;
 
 defaultValue
-    : '=' expression
+    : Equal expression
     ;
 
 aliasType
@@ -231,7 +162,7 @@ integerType
     | 'u16' 
     | 'u32' 
     | 'u64' 
-    | 'int' 
+    | Int
     | 'uint' 
     | 'size' 
     | 'uintptr'
@@ -268,37 +199,12 @@ storageClass
 // identifier
 
 
-name: nondigit | name alnum;
+// Name: Nondigit | Name Alnum;
+Name: [a-zA-Z_][a-zA-Z0-9_]*;
 
-nondigit
+Nondigit
     : 'a'
     | 'b'
-    | 'c' 
-    | 'd' 
-    | 'e' 
-    | 'f' 
-    | 'g' 
-    | 'h' 
-    | 'i' 
-    | 'j' 
-    | 'k' 
-    | 'l' 
-    | 'm' 
-    | 'n' 
-    | 'o' 
-    | 'p' 
-    | 'q' 
-    | 'r' 
-    | 's' 
-    | 't' 
-    | 'u' 
-    | 'v' 
-    | 'w' 
-    | 'x' 
-    | 'y' 
-    | 'z' 
-    | 'a' 
-    | 'b' 
     | 'c' 
     | 'd' 
     | 'e' 
@@ -327,7 +233,7 @@ nondigit
 ;
 
 
-decimalDigit
+DecimalDigit
     : '0'
     | '1'
     | '2'
@@ -340,9 +246,9 @@ decimalDigit
     | '9'
     ;
 
-alnum: decimalDigit | nondigit;
+Alnum: DecimalDigit | Nondigit;
 
-identifier : name | name '::' identifier;
+identifier : Name | Name '::' identifier;
 
 
 
@@ -367,7 +273,7 @@ literal
 
 
 floatingLiteral
-    : nonzeroDecimalDigits '.' decimalDigits decimalExponent? floatingSuffix?
+    : nonzeroDecimalDigits '.' DecimalDigits decimalExponent? floatingSuffix?
     | nonzeroDecimalDigits decimalExponent? floatingSuffix
     | '0x' hexDigits '.' hexDigits binaryExponent floatingSuffix?
     | '0x' hexDigits binaryExponent floatingSuffix?
@@ -378,19 +284,19 @@ floatingSuffix
     | 'f64'
     ;
 
-decimalDigitsWithoutSeparators
-    : decimalDigit decimalDigitsWithoutSeparators?
+DecimalDigitsWithoutSeparators
+    : DecimalDigit DecimalDigitsWithoutSeparators?
     ;
 
-decimalDigits
-    : decimalDigit decimalDigits?
-    | decimalDigit '_' decimalDigits
+DecimalDigits
+    : DecimalDigit DecimalDigits?
+    | DecimalDigit '_' DecimalDigits
     ;
 
 nonzeroDecimalDigits
     : '0'
-    | nonzeroDecimalDigit decimalDigits?
-    | nonzeroDecimalDigit '_' decimalDigits
+    | nonzeroDecimalDigit DecimalDigits?
+    | nonzeroDecimalDigit '_' DecimalDigits
     ;
 
 nonzeroDecimalDigit
@@ -437,11 +343,11 @@ hexDigit
     ;
 
 decimalExponent
-    : decimalExponentChar sign? decimalDigitsWithoutSeparators
+    : DecimalExponentChar sign? DecimalDigitsWithoutSeparators
     ;
 
 binaryExponent
-    : binaryExponentChar sign? decimalDigitsWithoutSeparators
+    : binaryExponentChar sign? DecimalDigitsWithoutSeparators
     ;
 
 sign
@@ -449,7 +355,7 @@ sign
     | '-'
     ;
 
-decimalExponentChar
+DecimalExponentChar
     : 'e'
     | 'E'
     ;
@@ -496,7 +402,7 @@ octalDigits
     ;
 
 positiveDecimalExponent
-    : decimalExponentChar '+'? decimalDigitsWithoutSeparators
+    : DecimalExponentChar '+'? DecimalDigitsWithoutSeparators
     ;
 
 runeLiteral
@@ -509,7 +415,7 @@ rune
     ;
 
 escapeSequence
-    : namedEscape
+    : NamedEscape
     | '\\x' hexDigit hexDigit
     | '\\u' fourbyte fourbyte
     | '\\U' eightbyte
@@ -524,7 +430,7 @@ eightbyte
     ;
 
 
-namedEscape
+NamedEscape
     : '\\0'
     | '\\a'
     | '\\b'
@@ -600,8 +506,8 @@ fieldValues
     ;
 
 fieldValue
-    : name '=' expression
-    | name ':' type '=' expression
+    : Name Equal expression
+    | Name ':' type Equal expression
     | structLiteral
     ;
 
@@ -689,7 +595,7 @@ offsetOperand
     ;
 
 fieldAccessExpression
-    : postfixExpression '.' name
+    : postfixExpression '.' Name
     | postfixExpression '.' integerLiteral
     ;
 
@@ -746,7 +652,7 @@ errorCheckingExpression
 postfixExpression
     : nestedExpression
     | postfixExpression '(' argumentList? ')'
-    | postfixExpression '.' name
+    | postfixExpression '.' Name
     | postfixExpression '.' integerLiteral
     | postfixExpression '[' expression ']'
     | postfixExpression '[' expression? '..' expression? ']'
@@ -790,7 +696,7 @@ unaryOperator
     : '-'
     | '~'
     | '!'
-    | '*'
+    | Times
     | '&'
     ;
 
@@ -810,7 +716,7 @@ nullableType
 
 multiplicativeExpression
     : castExpression
-    | multiplicativeExpression '*' castExpression
+    | multiplicativeExpression Times castExpression
     | multiplicativeExpression '/' castExpression
     | multiplicativeExpression '%' castExpression
     ;
@@ -909,7 +815,7 @@ iterableBindingLeft
     ;
 
 label
-    : ':' name
+    : ':' Name
     ;
 
 
@@ -942,7 +848,7 @@ matchCases
     ;
 
 matchCase
-    : 'case' 'let' name ':' type '=>' expressionList
+    : 'case' 'let' Name ':' type '=>' expressionList
     | 'case' nullableType? '=>' expressionList
     ;
 
@@ -950,7 +856,7 @@ matchCase
 
 assignment
     : assignmentTarget assignmentOp expression
-    | slicingAssignmentTarget '=' expression
+    | slicingAssignmentTarget Equal expression
     ;
 
 assignmentTarget
@@ -960,7 +866,7 @@ assignmentTarget
 
 
 indirectAssignmentTarget
-    : '*' unaryExpression
+    : Times unaryExpression
     ;
 
 slicingAssignmentTarget
@@ -970,7 +876,7 @@ slicingAssignmentTarget
 
 
 assignmentOp
-    : '='
+    : Equal
     | '+='
     | '-='
     | '*='
@@ -999,12 +905,12 @@ bindings
     ;
 
 binding
-    : bindingName  '='  expression 
-    | bindingName  ':'  type  '='  expression 
+    : bindingName  Equal  expression 
+    | bindingName  ':'  type  Equal  expression 
     ;
 
 bindingName
-    : name 
+    : Name 
     | '('  tupleBindingNames  ')' 
     ;
 
@@ -1014,7 +920,7 @@ tupleBindingNames
     ;
 
 tupleBindingName
-    : name 
+    : Name 
     | '_' 
     ;
 
@@ -1078,8 +984,8 @@ globalBindings
     ;
 globalBinding
     : declAttr?  '@threadlocal'?  identifier  ':'  type 
-    | declAttr?  '@threadlocal'?  identifier  ':'  type  '='  expression 
-    | declAttr?  '@threadlocal'?  identifier  '='  expression 
+    | declAttr?  '@threadlocal'?  identifier  ':'  type  Equal  expression 
+    | declAttr?  '@threadlocal'?  identifier  Equal  expression 
     ;
 declAttr
     : '@symbol'  '('  stringLiteral  ')' 
@@ -1092,8 +998,8 @@ constantBindings
     | constantBinding  ','  constantBindings 
     ;
 constantBinding
-    : identifier  ':'  type  '='  expression 
-    | identifier  '='  expression 
+    : identifier  ':'  type  Equal  expression 
+    | identifier  Equal  expression 
     ;
 typeDeclaration
     : 'type'  typeBindings 
@@ -1103,8 +1009,8 @@ typeBindings
     | typeBinding  ','  typeBindings 
     ;
 typeBinding
-    : identifier  '='  type 
-    | identifier  '='  enumType 
+    : identifier  Equal  type 
+    | identifier  Equal  enumType 
     ;
 enumType
     : 'enum'  enumStorage?  '{'  enumValues  '}' 
@@ -1114,8 +1020,8 @@ enumValues
     | enumValue  ','  enumValues 
     ;
 enumValue
-    : name 
-    | name  '='  expression 
+    : Name 
+    | Name  Equal  expression 
     ;
 enumStorage
     : integerType 
@@ -1123,7 +1029,7 @@ enumStorage
     ;
 functionDeclaration
     : fndecAttr?  'fn'  identifier  prototype 
-    | fndecAttr?  'fn'  identifier  prototype  '='  expression 
+    | fndecAttr?  'fn'  identifier  prototype  Equal  expression 
     ;
 fndecAttr
     : '@fini' 
@@ -1139,25 +1045,28 @@ imports
     ;
 useDirective
     : 'use'  identifier  ';' 
-    | 'use'  name  '='  identifier  ';' 
+    | 'use'  Name  Equal  identifier  ';' 
     | 'use'  identifier  '::'  '{'  memberList  '}'  ';' 
-    | 'use'  identifier  '::'  '*'  ';' 
+    | 'use'  identifier  '::'  Times  ';' 
     ;
 memberList
-    : name  ','? 
-    | name  ','  memberList 
+    : Name  ','? 
+    | Name  ','  memberList 
     ;
 
+Int
+    : 'int'
+    ;
 
 // :)
 start : subUnit EOF;
 
 // Other
 
-WHITESPACE
-    : [ \t]+ -> skip
+Whitespace
+    : [ \t]+ -> channel(HIDDEN)
     ;
 
-NEWLINE
-    : ('\r' '\n'? | '\n') -> skip
+Newline
+    : ('\r' '\n'? | '\n') -> channel(HIDDEN)
     ;

@@ -2,23 +2,22 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 
 	"lidsol.org/harels/parser"
 )
 
-type calcListener struct {
-	*parser.BaseCalcListener
+type hareListener struct {
+	*parser.BaseHareListener
 	stack []int
 }
 
-func (l *calcListener) push(i int) {
+func (l *hareListener) push(i int) {
 	l.stack = append(l.stack, i)
 }
 
-func (l *calcListener) pop() int {
+func (l *hareListener) pop() int {
 	if len(l.stack) < 1 {
 		panic("stack is empty")
 	}
@@ -30,55 +29,79 @@ func (l *calcListener) pop() int {
 	return result
 }
 
-func (l *calcListener) ExitMulDiv(c *parser.MulDivContext) {
-	right, left := l.pop(), l.pop()
+func (l *hareListener) isEmpty() bool {
+	return len(l.stack) == 0
+}
 
-	switch c.GetOp().GetTokenType() {
-	case parser.CalcParserMUL:
-		l.push(left * right)
-	case parser.CalcParserDIV:
-		l.push(left / right)
-	default:
-		panic(fmt.Sprintf("unexpected op: %s", c.GetOp().GetText()))
+func (l *hareListener) ExitIdentifier(c *parser.IdentifierContext) {
+	tok := c.GetStart()
+	fmt.Println("Name: ", tok.GetLine(), c.GetText())
+
+	if l.isEmpty() {
+		l.push(0)
+	} else {
+		val := l.pop()
+		l.push(val+1)
 	}
 }
 
-func (l *calcListener) ExitAddSub(c *parser.AddSubContext) {
-	right, left := l.pop(), l.pop()
+func (l *hareListener) EnterCallExpression(c *parser.CallExpressionContext) {
+	tok := c.GetStart()
+	fmt.Println("CALL: ", tok.GetLine(), c.GetText())
 
-	switch c.GetOp().GetTokenType() {
-	case parser.CalcParserADD:
-		l.push(left + right)
-	case parser.CalcParserSUB:
-		l.push(left - right)
-	default:
-		panic(fmt.Sprintf("unexpected op: %s", c.GetOp().GetText()))
+	if l.isEmpty() {
+		l.push(0)
+	} else {
+		val := l.pop()
+		l.push(val+1)
 	}
 }
 
-func (l *calcListener) ExitNumber(c *parser.NumberContext) {
-	i, err := strconv.Atoi(c.GetText())
-	if err != nil {
-		panic(err.Error())
-	}
+func (l *hareListener) ExitType(c *parser.TypeContext) {
+	tok := c.GetStart()
+	fmt.Println("type: ", tok.GetLine(), c.GetText())
 
-	l.push(i)
+	if l.isEmpty() {
+		l.push(0)
+	} else {
+		val := l.pop()
+		l.push(val+1)
+	}
 }
 
-func calc(input string) int {
+func hare(input string) int {
 	is := antlr.NewInputStream(input)
 
-	lexer := parser.NewCalcLexer(is)
+	lexer := parser.NewHareLexer(is)
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 
-	p := parser.NewCalcParser(stream)
+	p := parser.NewHareParser(stream)
 
-	var listener calcListener
+	var listener hareListener
 	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
 
 	return listener.pop()
 }
 
 func main() {
-	fmt.Println(calc("1 + 2 * 3"))
+	fmt.Println(hare(`
+use fmt;
+
+fn fac(n: int) void = {
+	if (n <= 1) {
+                return 1;
+        };
+        return n * fac(n-1);
+};
+
+export fn main() void = {
+	const greetings = [
+		"hello, world",
+		"hola mundo",
+	];
+	for (let greeting .. greetings) {
+		fmt::println(greeting)!;
+	};
+};
+`))
 }
