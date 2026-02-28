@@ -1,0 +1,26 @@
+{
+  "name": "client-lsp",
+  "version": "1.0.0",
+  "description": "Language Server's client module",
+  "homepage": "https://github.com/LIDSOL/harels#readme",
+  "bugs": {
+    "url": "https://github.com/LIDSOL/harels/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LIDSOL/harels.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0"
+  }
+}

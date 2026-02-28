@@ -3,19 +3,40 @@
   "displayName": "Hare-Language-Server",
   "description": "A language server for the hare language",
   "version": "0.0.1",
+  "license":"MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LIDSOL/harels"
+  },
+  "publisher": "LIDSOL",
+  "keywords": ["Hare","LSP","Language Server"],
   "engines": {
     "vscode": "^1.108.1"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+  "activationEvents": ["onLanguage:hare"],
+  "main": "./client/out/extension",
   "contributes": {
-    "commands": [
+    "configuration":{
+      "type":"object",
+      "title": "Hare Language Server",
+      "properties": {
+          "hareLanguageServer.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        }
+      }
+    },
+    "languages": [
       {
-        "command": "hare-language-server.helloWorld",
-        "title": "Hello World"
+        "id":"hare",
+        "aliases": ["Hare","hare"],
+        "extensions": [
+          ".ha"
+        ]
       }
     ]
   },
