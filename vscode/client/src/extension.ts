@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { workspace, ExtensionContext } from 'vscode';
-
+import * as vscode from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
@@ -39,6 +39,15 @@ export async function activate(context: ExtensionContext) {
 
   // Start the client. This will also launch the server
   await client.start();
+  vscode.window.showInformationMessage('Language client is ready');
+    // Code here runs after the client is ready
+  const capabilities = client.initializeResult?.capabilities;
+  vscode.window.showInformationMessage('TextDocumentSync: ' + JSON.stringify(capabilities));
+  console.log('Language client is ready');
+  // For example, log capabilities:
+
+  console.log('Capabilities received:', capabilities);
+
 }
 
 export async function deactivate() {

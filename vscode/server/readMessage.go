@@ -109,16 +109,27 @@ func handleInitialize(req RequestMessage) {
 	// Create minimal initialize result
 	result := protocol.InitializeResult{
 		Capabilities: protocol.ServerCapabilities{
-			// Add minimal capabilities here - empty for now
+			TextDocumentSync: protocol.TextDocumentSyncOptions{
+				OpenClose: true,
+				Change:    protocol.TextDocumentSyncKindFull,
+			},
+		},
+
+		ServerInfo: &protocol.ServerInfo{
+			Name:    "Hare Analyzer Server",
+			Version: "1.0.0",
 		},
 	}
+
 	fmt.Fprintln(os.Stderr, "HandleInitialize called")
+
 	// Send response
 	sendResponse(req.ID, result, nil)
 }
 
 // sendResponse sends a JSON-RPC response to stdout
 func sendResponse(id interface{}, result interface{}, err *ResponseError) {
+
 	response := ResponseMessage{
 		Message: Message{Jsonrpc: "2.0"},
 		ID:      id,
@@ -137,6 +148,7 @@ func sendResponse(id interface{}, result interface{}, err *ResponseError) {
 	header := fmt.Sprintf("Content-Length: %d\r\n\r\n", len(body))
 	fmt.Fprint(os.Stdout, header)
 	fmt.Fprint(os.Stdout, string(body))
+
 	os.Stdout.Sync()
 }
 
