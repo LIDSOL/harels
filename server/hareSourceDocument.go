@@ -9,10 +9,6 @@ type HareSourceDocument struct {
 	Document
 }
 
-func (d *HareSourceDocument) GetDocumentType() DocumentType {
-	return HareSourceDocumentType
-}
-
 func NewHareSourceDocument(fileURI uri.URI, content []byte, isOpen bool) *HareSourceDocument {
 	return &HareSourceDocument{
 		Document:                *NewDocument(fileURI, content, isOpen),

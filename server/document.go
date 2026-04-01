@@ -8,21 +8,12 @@ import (
 	"go.lsp.dev/uri"
 )
 
-type DocumentType string
-
-const HareSourceDocumentType DocumentType = "hare"
-
 type Document struct {
 	URI     lsp.DocumentURI
 	Path    string
 	Content []byte
 	lines   []string
 	IsOpen  bool
-}
-
-type DocumentInterface interface {
-	GetDocumentType() DocumentType
-	ApplyChanges([]lsp.TextDocumentContentChangeEvent)
 }
 
 type TextDocument interface {
