@@ -142,12 +142,25 @@ func handleInitialize(req RequestMessage) {
 
 func handleFoldingRange(req RequestMessage) {
 	fmt.Fprintln(os.Stderr, "handleFoldingRange called with params:", string(req.Params))
+	var params protocol.FoldingRangeParams
+	err := json.Unmarshal(req.Params, &params)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing folding range params: %v\n", err)
+		return
+	}
+	foldingRangesLines, errorPos := getBlockLines(documents[params.TextDocument.URI])
+	if errorPos != -1 {
+		fmt.Fprintf(os.Stderr, "Incorrect nested structure around line %d\n", errorPos)
+	}
 
-	foldingRanges := []protocol.FoldingRange{
-		{
-			StartLine: 0, // first line to fold
-			EndLine:   4, // last line to fold
-		},
+	foldingRanges := []protocol.FoldingRange{}
+	for _, r := range foldingRangesLines {
+		if r.l != r.r {
+			foldingRanges = append(foldingRanges, protocol.FoldingRange{
+				StartLine: uint32(r.l),
+				EndLine:   uint32(r.r),
+			})
+		}
 	}
 
 	fmt.Fprintln(os.Stderr, "Sending folding ranges:", foldingRanges)
