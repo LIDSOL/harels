@@ -1,71 +1,68 @@
-# hare-ls README
+# Hare Language Server — Extensión de VSCode
 
-This is the README for your extension "hare-ls". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Esta carpeta contiene la extensión de Visual Studio Code para brindar soporte
+de desarrollo al lenguaje de programación Hare, conectándose con el servidor
+de lenguaje `harels`.
 
 ---
 
-## Following extension guidelines
+## Requisitos Previos
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+Antes de instalar y ejecutar la extensión, asegúrate de tener instalado en tu sistema:
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+* [Node.js](https://nodejs.org/es/download/current) versión 18 o superior recomendada -> para distribuidor del usuario -> usando nvm -> con npm.
 
-## Working with Markdown
+* Verificar version de Node.js node -v
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+* Verificar version de npm npm -v
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
-## For more information
+## Instalación de Dependencias
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+La extensión tiene su propio `package.json` dentro de la carpeta `vscode/`.
+Instala las dependencias **desde esta carpeta**, no desde la raíz del repositorio:
 
-**Enjoy!**
+```bash
+cd vscode
+npm install
+```
+
+> Las advertencias `npm warn deprecated` son normales y no afectan el funcionamiento.
+
+---
+
+## Desarrollo y Pruebas Locales
+
+1. Abre la carpeta `vscode` en Visual Studio Code.
+2. Genera los archivos de salida de TypeScript necesarios para la compilación:
+
+```bash
+npx tsc -b client/tsconfig.json
+```
+
+> Este paso es necesario la primera vez que se clona el repositorio, ya que
+> el directorio `client/out/` no existe hasta que se ejecuta este comando.
+
+3. Compila el proyecto:
+
+```bash
+npm run compile
+```
+
+> Al finalizar correctamente verás: `Build successful! Binary created at: bin/harels-server`
+
+4. Abre el archivo `client/src/extension.ts` en VSCode.
+5. Listo para ejecutar con F5 o a Run -> Start Debugging para abrir una ventana nueva
+   de VSCode con la extensión cargada.
+6. Abre cualquier archivo `.hare` en esa ventana para verificar que el servidor
+   de lenguaje esté activo.
+
+---
+
+## Scripts Disponibles
+
+| Script            | Descripción |
+| `npm run compile` | Ejecuta el chequeo de tipos, el linter, compila con esbuild y corre `./server/build.sh` |
+| `npm run watch`   | Modo desarrollo: recompila automáticamente al detectar cambios en el código TypeScript|
+| `npm run lint`    | Revisa la calidad y formato del código fuente |---|---|
